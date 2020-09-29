@@ -21,14 +21,25 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         spawnMenu.SetActive(false);
-    }
-
-    private void Start()
-    {
         populationSlime = new int[3];
         populationSlime[0] = 0;
         populationSlime[1] = 0;
         populationSlime[2] = 0;
+    }
+
+    public void IncrementCount(int index)
+    {
+        populationSlime[index]++;
+        UpdateHUD();
+    }
+    public void DecrementCount(int index)
+    {
+        populationSlime[index]--;
+        UpdateHUD();
+    }
+
+    private void Start()
+    {
         playTime = 0.0f;
     }
 
@@ -67,8 +78,7 @@ public class GameManager : MonoBehaviour
         Vector3 currMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Instantiate(prefabSlime[num], new Vector3(currMousePos.x, currMousePos.y, 0f), Quaternion.identity);
         spawnMenu.SetActive(false);
-
-        populationSlime[num]++;
+        
         UpdateHUD();
     }
 

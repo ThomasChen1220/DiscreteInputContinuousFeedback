@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class B_Aggresive : MonoBehaviour
+public class B_Aggresive : SlimeBehavior
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void OnStart()
     {
-        
+        mSlimeID = 1;
     }
-
-    // Update is called once per frame
-    void Update()
+    public override void DoMyThing(Collision collision)
     {
-        
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SlimeBehavior))]
 public class Roam : MonoBehaviour
 {
     //[SerializeField] private Rigidbody2D rb2d;
@@ -17,6 +18,7 @@ public class Roam : MonoBehaviour
 
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         mBehavior = gameObject.GetComponent<SlimeBehavior>();
 
         //rb2d = GetComponent<Rigidbody2D>();
@@ -25,10 +27,11 @@ public class Roam : MonoBehaviour
         directionChangeTime = Random.Range(2f, 5f);
 
         //add self to GM count
+        gameManager.IncrementCount(mBehavior.mSlimeID);
     }
     private void OnDisable()
     {
-        
+        gameManager.DecrementCount(mBehavior.mSlimeID);
     }
 
     void Update()
@@ -52,7 +55,7 @@ public class Roam : MonoBehaviour
         // If collided with wall, redecide a direction
         if (collision.gameObject.tag == "Wall")
         {
-            Debug.Log("Change Dir");
+            //Debug.Log("Change Dir");
             ChangeDir();
         }
         // Interaction with other monsters: should communicate with GameManager to keep it updated
