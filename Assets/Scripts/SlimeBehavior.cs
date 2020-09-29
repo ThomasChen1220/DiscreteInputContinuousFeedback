@@ -7,7 +7,7 @@ public class SlimeBehavior : MonoBehaviour
 {
     //0 for slimeA, 1 for slimeB, 2 for slimeC
     public int mSlimeID = 0;
-    public virtual void DoMyThing(Collision collision) { }
+    public virtual void DoMyThing(Collision2D collision) { }
 
     private Roam mRoam;
     protected virtual void OnStart() {

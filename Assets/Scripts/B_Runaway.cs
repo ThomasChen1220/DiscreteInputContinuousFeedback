@@ -8,7 +8,7 @@ public class B_Runaway : SlimeBehavior
     {
         mSlimeID = 2;
     }
-    public override void DoMyThing(Collision collision)
+    public override void DoMyThing(Collision2D collision)
     {
 
     }

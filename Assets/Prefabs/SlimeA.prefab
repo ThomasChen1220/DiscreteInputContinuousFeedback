@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 287400814074590322}
   m_Layer: 0
   m_Name: SlimeA
-  m_TagString: Untagged
+  m_TagString: Slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,6 +119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mSlimeID: 0
+  mateInterval: 3
+  lastMate: 0
 --- !u!114 &7001817534515234980
 MonoBehaviour:
   m_ObjectHideFlags: 0

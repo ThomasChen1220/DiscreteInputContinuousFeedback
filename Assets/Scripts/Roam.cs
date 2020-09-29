@@ -59,6 +59,11 @@ public class Roam : MonoBehaviour
             ChangeDir();
         }
         // Interaction with other monsters: should communicate with GameManager to keep it updated
+        if (collision.gameObject.tag == "Slime")
+        {
+            //do the slime behavior
+            mBehavior.DoMyThing(collision);
+        }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
