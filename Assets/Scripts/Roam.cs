@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(SlimeBehavior))]
 public class Roam : MonoBehaviour
 {
-    //[SerializeField] private Rigidbody2D rb2d;
     [SerializeField] private GameManager gameManager;
 
     // Movement
@@ -21,7 +20,6 @@ public class Roam : MonoBehaviour
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         mBehavior = gameObject.GetComponent<SlimeBehavior>();
 
-        //rb2d = GetComponent<Rigidbody2D>();
         CalcNewDir();
         currTime = 0f;
         directionChangeTime = Random.Range(2f, 5f);

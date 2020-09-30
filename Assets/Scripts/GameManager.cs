@@ -9,36 +9,37 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] prefabSlime;
 
     [SerializeField] private int[] populationSlime;
+    [SerializeField] private int totalSlimes;
 
     [SerializeField] private TMP_Text textSlimeA;
     [SerializeField] private TMP_Text textSlimeB;
     [SerializeField] private TMP_Text textSlimeC;
     [SerializeField] private TMP_Text textSlimeTotal;
 
+    [Space]
+    [SerializeField] private GameObject panelLostGame;
+    [SerializeField] private TMP_Text gameLoseText;
+
+    [Space]
     private float playTime; // Essentially score, how long player survived
     [SerializeField] private TMP_Text timerText;
 
+    private bool gameStop;
+
     private void Awake()
     {
-        spawnMenu.SetActive(false);
         populationSlime = new int[3];
         populationSlime[0] = 0;
         populationSlime[1] = 0;
         populationSlime[2] = 0;
-    }
-
-    public void IncrementCount(int index)
-    {
-        populationSlime[index]++;
-    }
-    public void DecrementCount(int index)
-    {
-        populationSlime[index]--;
+        SpawnStartingSlimes();
     }
 
     private void Start()
     {
         playTime = 0.0f;
+        gameStop = false;
+        panelLostGame.SetActive(false); 
     }
 
     void Update()
@@ -67,9 +68,36 @@ public class GameManager : MonoBehaviour
         }
 
         // Update play timer
-        playTime += Time.deltaTime;
-        timerText.text = playTime.ToString("F2"); // 2 d.p.
+        if (!gameStop)
+        {
+            playTime += Time.deltaTime;
+            timerText.text = playTime.ToString("F2"); // 2 d.p.
+        }
+        
 
+        // Calculate total slimes here
+        totalSlimes = populationSlime[0] + populationSlime[1] + populationSlime[2];
+
+        UpdateHUD();
+
+        // Check win/lose condition
+        if (totalSlimes < 10 || totalSlimes > 30)
+        {
+            Debug.Log("Lose condition");
+            gameStop = true;
+            LostGame();
+        }
+    }
+
+    public void IncrementCount(int index)
+    {
+        populationSlime[index]++;
+        UpdateHUD();
+    }
+
+    public void DecrementCount(int index)
+    {
+        populationSlime[index]--;
         UpdateHUD();
     }
 
@@ -84,19 +112,100 @@ public class GameManager : MonoBehaviour
 
     void UpdateHUD()
     {
-        int totalSlimes = populationSlime[0] + populationSlime[1] + populationSlime[2];
+        if (gameStop) // Don't update if game stopped
+        {
+            return;
+        }
+
         textSlimeA.text = "Slime A: " + populationSlime[0].ToString();
         textSlimeB.text = "Slime B: " + populationSlime[1].ToString();
         textSlimeC.text = "Slime C: " + populationSlime[2].ToString();
-        textSlimeTotal.text = "Total     : " + totalSlimes.ToString();
+        textSlimeTotal.text = "Total     : " + (populationSlime[0] + populationSlime[1] + populationSlime[2]).ToString();
 
-        if (totalSlimes > 30 || totalSlimes < 10)
+        if (totalSlimes > 30 || totalSlimes < 15)
         {
             textSlimeTotal.color = new Color32(255, 0, 0, 255);
         }
         else
         {
             textSlimeTotal.color = new Color32(0, 0, 0, 255);
+        }
+    }
+
+    // Small issue: OnStart does not work if you drag slimes in, or spawn them in like this either apparently...
+    void SpawnStartingSlimes()
+    {
+        float x, y;
+
+        // Top right island:
+        // 8 green slimes, 2 red slimes
+        StartCoroutine(SpawnGreenSlimes()); // See function below
+        for (int k = 0; k < 2; k++)
+        {
+            x = Random.Range(0.1f, 8.5f);
+            y = Random.Range(1f, 4.5f);
+            Instantiate(prefabSlime[1], new Vector3(x, y, 0f), Quaternion.identity);
+        }
+        
+        // Bottom right island:
+        // 5 blue slimes, 1 red slime
+        for (int j = 0; j < 5; j++)
+        {
+            x = Random.Range(0.45f, 8.5f);
+            y = Random.Range(-4.2f, -0.15f);
+
+            Instantiate(prefabSlime[2], new Vector3(x, y, 0f), Quaternion.identity);
+        }
+        x = Random.Range(0.45f, 8.5f);
+        y = Random.Range(-4.2f, -0.15f);
+        Instantiate(prefabSlime[1], new Vector3(x, y, 0f), Quaternion.identity);
+
+        // Bottom left island:
+        // 1 red slime
+        x = Random.Range(-8.5f, -1f);
+        y = Random.Range(-4.2f, -0.6f);
+        Instantiate(prefabSlime[1], new Vector3(x, y, 0f), Quaternion.identity);
+
+        // Top left island
+        // 2 red slimes, 1 blue slime
+        for (int k = 0; k < 2; k++)
+        {
+            x = Random.Range(-8.5f, -1f);
+            y = Random.Range(1f, 4.5f);
+            Instantiate(prefabSlime[1], new Vector3(x, y, 0f), Quaternion.identity);
+        }
+        x = Random.Range(-8.5f, -1f);
+        y = Random.Range(1f, 4.5f);
+        Instantiate(prefabSlime[2], new Vector3(x, y, 0f), Quaternion.identity);
+
+        UpdateHUD();
+    }
+
+    // Due to the way the mating code works, need to stagger their spawning, can't be bothered changing mating code
+    IEnumerator SpawnGreenSlimes()
+    {
+        float x, y;
+        for (int i = 0; i < 8; i++)
+        {
+            x = Random.Range(0.1f, 8.5f);
+            y = Random.Range(1f, 4.5f);
+
+            Instantiate(prefabSlime[0], new Vector3(x, y, 0f), Quaternion.identity);
+            yield return new WaitForSeconds(0.08f);
+        }
+    }
+
+    void LostGame()
+    {
+        panelLostGame.SetActive(true);
+
+        if (totalSlimes >= 25)
+        {
+            gameLoseText.text = "You lost due to overpopulation!";
+        }
+        else
+        {
+            gameLoseText.text = "You lost due to near extinction!";
         }
     }
 

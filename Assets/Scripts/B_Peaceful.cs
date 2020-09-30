@@ -10,7 +10,13 @@ public class B_Peaceful : SlimeBehavior
 
     protected override void OnStart()
     {
-        base.OnStart();
+        mSlimeID = 0;
+        lastMate = Time.time;
+        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    private void Awake()
+    {
         lastMate = Time.time;
         gameObject.GetComponent<SpriteRenderer>().color = Color.white;
     }
@@ -30,9 +36,10 @@ public class B_Peaceful : SlimeBehavior
         if (other != null)
         {
             float nextMateTime = Mathf.Max(lastMate + mateInterval, other.lastMate + other.mateInterval);
-            if(nextMateTime < Time.time && lastMate<other.lastMate)
+
+            if (nextMateTime < Time.time && lastMate < other.lastMate)
             {
-                // Make a baby
+                // Make a baby - This never gets called unless we manually add in slimes
                 Debug.Log("Mating");
                 GameObject c = Instantiate(gameObject);
                 c.transform.position = (transform.position + other.transform.position)/2;
