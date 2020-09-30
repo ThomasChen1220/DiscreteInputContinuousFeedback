@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class B_Aggresive : SlimeBehavior
 {
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     protected override void OnStart()
     {
         mSlimeID = 1;
@@ -13,6 +20,8 @@ public class B_Aggresive : SlimeBehavior
     {
         // Briefly increase size to indicate eating
         StartCoroutine(Eating());
+
+        audioSource.Play();
 
         Destroy(collision.gameObject); // Destroy the other slime (regardless of what type)
     }

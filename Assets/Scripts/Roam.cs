@@ -15,6 +15,12 @@ public class Roam : MonoBehaviour
     private SlimeBehavior mBehavior;
 
 
+    private void Awake()
+    {
+        // Just in case
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -69,10 +75,10 @@ public class Roam : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        HandleCollision(collision);
-    }
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    HandleCollision(collision);
+    //}
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -87,6 +93,7 @@ public class Roam : MonoBehaviour
     // Used by blue slime C
     public void BoostSpeed()
     {
+        Debug.Log("Boost speed called");
         StartCoroutine(IncreaseSpeed(1f)); // Boost speed for 1 second
     }
 

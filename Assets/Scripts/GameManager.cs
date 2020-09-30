@@ -138,9 +138,9 @@ public class GameManager : MonoBehaviour
         float x, y;
 
         // Top right island:
-        // 8 green slimes, 2 red slimes
+        // 9 green slimes, 1 red slimes
         StartCoroutine(SpawnGreenSlimes()); // See function below
-        for (int k = 0; k < 2; k++)
+        for (int k = 0; k < 1; k++)
         {
             x = Random.Range(0.1f, 8.5f);
             y = Random.Range(1f, 4.5f);
@@ -185,7 +185,7 @@ public class GameManager : MonoBehaviour
     IEnumerator SpawnGreenSlimes()
     {
         float x, y;
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 9; i++)
         {
             x = Random.Range(0.1f, 8.5f);
             y = Random.Range(1f, 4.5f);
