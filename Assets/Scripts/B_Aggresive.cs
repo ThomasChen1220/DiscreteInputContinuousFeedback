@@ -8,6 +8,7 @@ public class B_Aggresive : SlimeBehavior
     {
         mSlimeID = 1;
     }
+
     public override void DoMyThing(Collision2D collision)
     {
 

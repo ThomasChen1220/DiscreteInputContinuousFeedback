@@ -7,21 +7,26 @@ public class B_Peaceful : SlimeBehavior
     public Color tint;
     public float mateInterval = 3f;
     public float lastMate;
+
     protected override void OnStart()
     {
         base.OnStart();
         lastMate = Time.time;
         gameObject.GetComponent<SpriteRenderer>().color = Color.white;
     }
+
     private void Update()
     {
-        if(lastMate + mateInterval < Time.time)
+        if (lastMate + mateInterval < Time.time)
         {
             gameObject.GetComponent<SpriteRenderer>().color = tint;
         }
     }
+
     public override void DoMyThing(Collision2D collision) {
         B_Peaceful other = collision.gameObject.GetComponent<B_Peaceful>();
+
+        // If other is not null it means we hit another peaceful green slime
         if (other != null)
         {
             float nextMateTime = Mathf.Max(lastMate + mateInterval, other.lastMate + other.mateInterval);

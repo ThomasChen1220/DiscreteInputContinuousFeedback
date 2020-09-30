@@ -30,12 +30,10 @@ public class GameManager : MonoBehaviour
     public void IncrementCount(int index)
     {
         populationSlime[index]++;
-        UpdateHUD();
     }
     public void DecrementCount(int index)
     {
         populationSlime[index]--;
-        UpdateHUD();
     }
 
     private void Start()
@@ -71,6 +69,8 @@ public class GameManager : MonoBehaviour
         // Update play timer
         playTime += Time.deltaTime;
         timerText.text = playTime.ToString("F2"); // 2 d.p.
+
+        UpdateHUD();
     }
 
     public void SpawnSlime(int num)
@@ -84,10 +84,20 @@ public class GameManager : MonoBehaviour
 
     void UpdateHUD()
     {
+        int totalSlimes = populationSlime[0] + populationSlime[1] + populationSlime[2];
         textSlimeA.text = "Slime A: " + populationSlime[0].ToString();
         textSlimeB.text = "Slime B: " + populationSlime[1].ToString();
         textSlimeC.text = "Slime C: " + populationSlime[2].ToString();
-        textSlimeTotal.text = "Total     : " + (populationSlime[0] + populationSlime[1] + populationSlime[2]).ToString();
+        textSlimeTotal.text = "Total     : " + totalSlimes.ToString();
+
+        if (totalSlimes > 30 || totalSlimes < 10)
+        {
+            textSlimeTotal.color = new Color32(255, 0, 0, 255);
+        }
+        else
+        {
+            textSlimeTotal.color = new Color32(0, 0, 0, 255);
+        }
     }
 
 }

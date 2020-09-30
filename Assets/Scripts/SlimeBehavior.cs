@@ -5,14 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Roam))]
 public class SlimeBehavior : MonoBehaviour
 {
-    //0 for slimeA, 1 for slimeB, 2 for slimeC
+    // Base class for B_Aggressive, Peaceful, and Runaway
+
+    // 0 for slimeA, 1 for slimeB, 2 for slimeC
     public int mSlimeID = 0;
+    protected Roam mRoam;
+
     public virtual void DoMyThing(Collision2D collision) { }
 
-    private Roam mRoam;
-    protected virtual void OnStart() {
+    protected virtual void OnStart() { }
 
-    }
     private void Start()
     {
         OnStart();

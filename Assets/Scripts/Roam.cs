@@ -29,6 +29,8 @@ public class Roam : MonoBehaviour
         //add self to GM count
         gameManager.IncrementCount(mBehavior.mSlimeID);
     }
+
+    // May have to do this On Destroy? 
     private void OnDisable()
     {
         gameManager.DecrementCount(mBehavior.mSlimeID);
@@ -45,17 +47,18 @@ public class Roam : MonoBehaviour
         transform.position += currDir * moveSpeed * Time.deltaTime;
     }
 
-    void ChangeDir() {
+    // Made public so it can be called by behavior
+    public void ChangeDir() {
         currTime = Time.time;
         CalcNewDir();
         directionChangeTime = Random.Range(2f, 5f);
     }
+
     void HandleCollision(Collision2D collision)
     {
         // If collided with wall, redecide a direction
         if (collision.gameObject.tag == "Wall")
         {
-            //Debug.Log("Change Dir");
             ChangeDir();
         }
         // Interaction with other monsters: should communicate with GameManager to keep it updated
@@ -65,10 +68,12 @@ public class Roam : MonoBehaviour
             mBehavior.DoMyThing(collision);
         }
     }
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         HandleCollision(collision);
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         HandleCollision(collision);
@@ -79,5 +84,19 @@ public class Roam : MonoBehaviour
         currDir = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), 0f).normalized;
     }
 
+    // Used by blue slime C
+    public void BoostSpeed()
+    {
+        StartCoroutine(IncreaseSpeed(1f)); // Boost speed for 1 second
+    }
 
+    // Increases speed for s seconds
+    IEnumerator IncreaseSpeed(float s)
+    {
+        moveSpeed += 0.5f;
+
+        yield return new WaitForSeconds(s);
+
+        moveSpeed -= 0.5f;
+    }
 }
