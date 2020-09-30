@@ -32,7 +32,7 @@ public class B_Peaceful : SlimeBehavior
             float nextMateTime = Mathf.Max(lastMate + mateInterval, other.lastMate + other.mateInterval);
             if(nextMateTime < Time.time && lastMate<other.lastMate)
             {
-                //make a baby
+                // Make a baby
                 Debug.Log("Mating");
                 GameObject c = Instantiate(gameObject);
                 c.transform.position = (transform.position + other.transform.position)/2;

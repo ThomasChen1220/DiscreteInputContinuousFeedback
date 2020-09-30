@@ -26,13 +26,14 @@ public class Roam : MonoBehaviour
         currTime = 0f;
         directionChangeTime = Random.Range(2f, 5f);
 
-        //add self to GM count
+        // Add self to GM count
         gameManager.IncrementCount(mBehavior.mSlimeID);
     }
 
-    // May have to do this On Destroy? 
+    // In this case, works same as with On Destroy
     private void OnDisable()
     {
+        //Debug.Log("Roam: OnDisable called");
         gameManager.DecrementCount(mBehavior.mSlimeID);
     }
 
@@ -61,10 +62,11 @@ public class Roam : MonoBehaviour
         {
             ChangeDir();
         }
+
         // Interaction with other monsters: should communicate with GameManager to keep it updated
         if (collision.gameObject.tag == "Slime")
         {
-            //do the slime behavior
+            // Do slime behavior for appropriate type of slime
             mBehavior.DoMyThing(collision);
         }
     }
